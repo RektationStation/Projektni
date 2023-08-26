@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Country and US State Information</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+
+<body>
+  <h1>Country and US State Information</h1>
+
+  <div id="content" style="display: none;">
+    <input type="text" id="search-input" placeholder="Search for a country or US state" onkeydown="handleSearch(event)">
+    <button onclick="searchCountryOrState()">Search</button>
+
+    <div id="country-details"></div>
+    <div id="map"></div>
+    <div id="error-message" class="error" style="display: none;"></div>
+
+    <div id="favorites-container">
+      <h2>Favorites</h2>
+      <ul id="favorites-list"></ul>
+    </div>
+
+    <!-- Content elements -->
+  </div>
+  <div id="favorites-map" class="map"></div>
+  <button id="view-favorites-btn" onclick="showFavoritesMap()" style="display: none;">View Favorites Map</button>
+
+  <div id="login-container" style="display: none;">
+    <h2>Login</h2>
+    <input type="email" id="login-email" placeholder="Email" required>
+    <input type="password" id="login-password" placeholder="Password" required>
+    <button onclick="login()">Login</button>
+    <p>Don't have an account? <a href="#" onclick="showRegistration()">Register</a></p>
+  </div>
+
+  <div id="register-container" style="display: none;">
+    <h2>Register</h2>
+    <input type="text" id="register-name" placeholder="Full Name" required>
+    <input type="email" id="register-email" placeholder="Email" required>
+    <input type="password" id="register-password" placeholder="Password" required>
+    <button onclick="register()">Register</button>
+    <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+  </div>
+
+  <!-- Add the following logout button outside the content div -->
+  <button id="logout-btn" onclick="logout()" style="display: none;">Logout</button>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // Firebase Authentication event listener
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is logged in, show the content and the logout button
+        document.getElementById("login-container").style.display = "none";
+        document.getElementById("register-container").style.display = "none";
+        document.getElementById("content").style.display = "block";
+        document.getElementById("logout-btn").style.display = "block";
+      } else {
+        // User is not logged in, show the login container and hide the logout button
+        document.getElementById("login-container").style.display = "block";
+        document.getElementById("register-container").style.display = "none";
+        document.getElementById("content").style.display = "none";
+        document.getElementById("logout-btn").style.display = "none";
+      }
+    });
+  </script>
+</body>
+
+</html>
